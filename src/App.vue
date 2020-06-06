@@ -1,66 +1,71 @@
 <template>
-  <div class="container">
-    <div class="row ">
-      <div class="col-md-6 mr-auto ml-auto mt-3">
-          <h4 class="text-center">Vuex</h4>
+<div class="container">
+    <app-header></app-header>
+    <div class="row">
+      <div class="col-lg-12">
+        <transition name="slide" mode="out-in" >
+        <router-view></router-view>
+        </transition>
       </div>
-  </div>
-  <hr>
-    <div class="row ">
-        <app-counter></app-counter>
-        <app-result></app-result>
-        <hr>
-        <app-another-result></app-another-result>
-        <app-another-counter></app-another-counter>
-        <hr>
-        <input type="text" v-model="value" >
-        <small>{{value}}</small>
-
-        <!-- <app-counter @updated="counter += $event" ></app-counter>
-        <app-result :counter="counter" ></app-result> -->
-  </div>
-  </div>
+    </div>
+</div>
 </template>
 
 <script>
-import CounterVue from './components/Counter.vue';
-import ResultVue from './components/Result.vue';
-import AnotherResultVue from './components/AnotherResult.vue';
-import AnotherCounterVue from './components/AnotherCounter.vue';
+import HeaderVue from './components/Header.vue'
 
 export default {
-  // data() {
-  //   return {
-  //     counter: 0
-  //   }
-  // },
-  computed: {
-    value: {
-      get() {
-        return this.$store.getters.value;
-      },
-      set(value){
-        this.$store.dispatch('updateValue', value);
-      }
-    }
-    // value(){
-    //   return this.$store.getters.value;
-    // }
-  },
-  methods: {
-    updateValue(event){
-      this.$store.dispatch('updateValue', event.target.value)
-    }
-  },
+  name: 'App',
   components: {
-    'appCounter' : CounterVue,
-    'appResult' : ResultVue,
-    'appAnotherResult': AnotherResultVue,
-    'appAnotherCounter': AnotherCounterVue
-  }
-};
+    'appHeader': HeaderVue
+  },
+  created() {
+    this.$store.dispatch('initStocks');
+  },
+}
 </script>
 
 <style>
- 
+ body {
+   padding: 30px;
+ }
+ /* .slide-enter{
+    opacity: 0;
+  } */
+  .slide-enter-active{
+      animation: slide-in 200ms ease-out forwards;
+      /* transition: opacity .5s; */
+  }
+  /* .slide-move{
+    transition: transform 1s;
+  }
+  .slide-leave{
+
+  } */
+  .slide-leave-active{
+      animation: slide-out 200ms ease-out forwards;
+      /* transition: opacity 1s;
+      opacity: 0; */
+  } 
+
+  @keyframes slide-in {
+    from{
+      transform: translateY(-30px);
+      opacity: 0;
+    }
+    to{
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  @keyframes slide-out {
+    from{
+      transform: translateY(0);
+      opacity: 1;
+    }
+    to{
+      transform: translateY(-30px);
+      opacity: 0;
+    }
+  }
 </style>

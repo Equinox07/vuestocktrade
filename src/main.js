@@ -1,15 +1,32 @@
-// use 'esversion: 6;
-import Vue from 'vue'
+/*jshint esversion: 6 */
+import Vue from 'vue';
 import VueResource from  'vue-resource';
 import VueRouter from  'vue-router';
 import App from './App.vue';
-import {store} from './store/store';
-// import {routes} from './routes';
+import store from './store/store';
+import {routes} from './routes';
 
+
+Vue.use(VueResource);
+
+Vue.filter('currency', (value) => {
+    return '$' + value.toLocaleString();
+});
+
+Vue.use(VueRouter);
+
+Vue.http.options.root = 'https://vuestocktrader-74387.firebaseio.com/';
+
+
+const router = new VueRouter({
+  routes,
+  mode : 'history'
+});
 
 new Vue({
   el: '#app',
   store,
+  router,
   render: h => h(App)
 });
 
